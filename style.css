@@ -1,0 +1,61 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #f0f0f0; /* Initial background */
+    transition: background-color 0.5s ease;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.letter-display {
+    font-size: 10rem;
+    margin-bottom: 20px;
+    min-height: 150px; /* Ensure space even if letter is small */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mic-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#mic-button:active {
+    background-color: #0056b3;
+}
+
+.stats p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+.feedback {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    min-height: 20px; /* Ensure space for feedback text */
+}
+
+/* Background colors for streak - will be applied via JS */
+/* .streak-bg-1 { background-color: #9b59b6; } purple */
+/* .streak-bg-2 { background-color: #3498db; } blue */
+/* .streak-bg-3 { background-color: #2ecc71; } green */
+/* .streak-bg-4 { background-color: #f1c40f; } yellow */
+/* .streak-bg-5 { background-color: #e67e22; } orange */
+/* .streak-bg-6 { background-color: #e74c3c; } red */ 
