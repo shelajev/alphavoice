@@ -6,7 +6,6 @@ const feedbackDisplay = document.getElementById('feedback');
 const body = document.body;
 
 const englishAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const estonianAlphabet = 'abcdefghijklmnoprsšzžtuvwõäöüABCDEFGHIJKLMNOPQRSŠZŽTUVWÕÄÖÜ';
 const allLetters = englishAlphabet;
 
 let currentLetter = '';
@@ -55,11 +54,7 @@ function displayNewLetter() {
     letterDisplay.textContent = currentLetter;
     feedbackDisplay.textContent = '';
     // Dynamically set lang for recognition based on char
-    if (estonianAlphabet.includes(currentLetter)) {
-        recognition.lang = 'et-EE';
-    } else {
-        recognition.lang = 'en-US'; // Default to English if not clearly Estonian
-    }
+    recognition.lang = 'en-US'; // Default to English
 }
 
 function checkAnswer(spoken) {
