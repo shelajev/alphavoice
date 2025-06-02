@@ -32,13 +32,13 @@ if (SpeechRecognition) {
         feedbackDisplay.textContent = 'Error recognizing speech: ' + event.error;
         feedbackDisplay.style.color = 'red';
         micButton.disabled = false;
-        micButton.textContent = 'Hold and Speak';
+        micButton.textContent = 'Press to Speak';
     };
 
     recognition.onend = () => {
         if (!newLetterPending) { // Only reset button if not waiting for new letter after correct
             micButton.disabled = false;
-            micButton.textContent = 'Hold and Speak';
+            micButton.textContent = 'Press to Speak';
         }
         // If newLetterPending is true, the timeout in checkAnswer will handle
         // re-enabling the button and setting the text appropriately after the new letter.
@@ -86,7 +86,7 @@ function checkAnswer(spoken) {
         setTimeout(() => {
             displayNewLetter(); // This updates the letter and also clears feedbackDisplay
             micButton.disabled = false; // Now enable the button
-            micButton.textContent = 'Hold and Speak'; // Set final button text
+            micButton.textContent = 'Press to Speak'; // Set final button text
             newLetterPending = false; // Reset the flag
         }, 1500); // Keep the delay for "Correct!" feedback visibility
     } else {
@@ -141,7 +141,7 @@ micButton.addEventListener('mousedown', () => {
             console.error("Error starting recognition:", e);
             feedbackDisplay.textContent = 'Could not start listening. Please try again.';
             micButton.disabled = false;
-            micButton.textContent = 'Hold and Speak';
+            micButton.textContent = 'Press to Speak';
         }
     }
 });
