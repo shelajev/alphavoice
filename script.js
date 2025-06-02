@@ -5,8 +5,8 @@ const streakDisplay = document.getElementById('streak');
 const feedbackDisplay = document.getElementById('feedback');
 const body = document.body;
 
-const englishAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const allLetters = englishAlphabet;
+const estonianAlphabet = 'abcdefghijklmnopqrsšzžtuvwõäöüABCDEFGHIJKLMNOPQRSŠZŽTUVWÕÄÖÜ';
+const allLetters = estonianAlphabet;
 
 let currentLetter = '';
 let score = 0;
@@ -19,7 +19,7 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.continuous = false;
-    recognition.lang = 'en-US'; // Default, can be changed
+    recognition.lang = 'et-EE'; // Default, can be changed
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
@@ -61,19 +61,15 @@ function displayNewLetter() {
     feedbackDisplay.textContent = '';
     feedbackDisplay.style.color = ''; // Reset color
     // Dynamically set lang for recognition based on char
-    recognition.lang = 'en-US'; // Default to English
+    recognition.lang = 'et-EE'; // Default to English
 }
 
 function checkAnswer(spoken) {
     // Normalize spoken input, e.g. "capital a" -> "a" or "big a" -> "a"
     // Or "letter a" -> "a"
     let normalizedSpoken = spoken.replace(/^(capital|big|letter|väike|suur|täht)\s/i, '').trim();
-    if (normalizedSpoken.length > 1) { // if it's a word, try to take the first letter
-        normalizedSpoken = normalizedSpoken.charAt(0);
-    }
 
-
-    if (normalizedSpoken.toLowerCase() === currentLetter.toLowerCase()) {
+    if (normalizedSpoken.toLowerCase().startsWith(currentLetter.toLowerCase())) {
         score++;
         streak++;
         feedbackDisplay.textContent = 'Correct!';
@@ -91,7 +87,7 @@ function checkAnswer(spoken) {
         }, 1500); // Keep the delay for "Correct!" feedback visibility
     } else {
         streak = 0;
-        feedbackDisplay.textContent = `Incorrect. You said: "${spoken}". Correct was: "${currentLetter}"`;
+        feedbackDisplay.textContent = `Incorrect. You said: "${spoken}". Ütle sõna, mis algab tähega: "${currentLetter}"`;
         feedbackDisplay.style.color = 'red';
         // Do not automatically advance on incorrect answer
     }
