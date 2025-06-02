@@ -11,6 +11,7 @@ const allLetters = englishAlphabet;
 let currentLetter = '';
 let score = 0;
 let streak = 0;
+let newLetterPending = false; // Flag to manage button state during correct answer processing
 let recognition;
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -29,13 +30,18 @@ if (SpeechRecognition) {
 
     recognition.onerror = (event) => {
         feedbackDisplay.textContent = 'Error recognizing speech: ' + event.error;
+        feedbackDisplay.style.color = 'red';
         micButton.disabled = false;
         micButton.textContent = 'Hold and Speak';
     };
 
     recognition.onend = () => {
-        micButton.disabled = false;
-        micButton.textContent = 'Hold and Speak';
+        if (!newLetterPending) { // Only reset button if not waiting for new letter after correct
+            micButton.disabled = false;
+            micButton.textContent = 'Hold and Speak';
+        }
+        // If newLetterPending is true, the timeout in checkAnswer will handle
+        // re-enabling the button and setting the text appropriately after the new letter.
     };
 
 } else {
@@ -53,6 +59,7 @@ function displayNewLetter() {
     currentLetter = getRandomLetter();
     letterDisplay.textContent = currentLetter;
     feedbackDisplay.textContent = '';
+    feedbackDisplay.style.color = ''; // Reset color
     // Dynamically set lang for recognition based on char
     recognition.lang = 'en-US'; // Default to English
 }
@@ -71,14 +78,25 @@ function checkAnswer(spoken) {
         streak++;
         feedbackDisplay.textContent = 'Correct!';
         feedbackDisplay.style.color = 'green';
+
+        newLetterPending = true;
+        micButton.textContent = 'Correct!'; // Indicate status on the button
+        micButton.disabled = true;        // Keep button disabled during feedback
+
+        setTimeout(() => {
+            displayNewLetter(); // This updates the letter and also clears feedbackDisplay
+            micButton.disabled = false; // Now enable the button
+            micButton.textContent = 'Hold and Speak'; // Set final button text
+            newLetterPending = false; // Reset the flag
+        }, 1500); // Keep the delay for "Correct!" feedback visibility
     } else {
         streak = 0;
         feedbackDisplay.textContent = `Incorrect. You said: "${spoken}". Correct was: "${currentLetter}"`;
         feedbackDisplay.style.color = 'red';
+        // Do not automatically advance on incorrect answer
     }
     updateStats();
     updateBackgroundColor();
-    setTimeout(displayNewLetter, 1500); // Display new letter after a delay
 }
 
 function updateStats() {
@@ -139,4 +157,11 @@ micButton.addEventListener('mouseup', () => {
 // Initial setup
 displayNewLetter();
 updateStats();
-updateBackgroundColor(); 
+updateBackgroundColor();
+
+feedbackDisplay.addEventListener('click', () => {
+    // If the feedback message is an error (indicated by red color)
+    if (feedbackDisplay.style.color === 'red') {
+        displayNewLetter();
+    }
+}); 
